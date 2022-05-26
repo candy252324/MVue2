@@ -46,6 +46,21 @@
         foo(text) {
           this.count++
         }
+      },
+      components: {
+        "comp": {
+          template: `
+            <div>
+              <p>{{compCount}}</p>
+            </div>
+            <button m-on:click="handleAdd"></button>
+          `,
+          data() {
+            return {
+              compCount: 0
+            }
+          }
+        }
       }
     })
 

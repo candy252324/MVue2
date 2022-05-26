@@ -2,7 +2,7 @@ import observe from './src/observe.mjs'
 import defineReactive from './src/defineReactive.mjs'
 import proxyData from './src/proxyData.mjs'
 import initData from './src/initData.mjs'
-import mount from './src/mount.mjs'
+import mount from './src/compiler/index.mjs'
 
 export default class MVue {
   constructor(options) {
