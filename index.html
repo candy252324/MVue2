@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .line {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <h2>插值表达式：姓名{{ name}}，爱好{{hobby}}</h2>
+    <h2>
+      m-text:<span m-text="name"></span>
+    </h2>
+    <h2 m-html="myHtml"></h2>
+    <button m-on:click="foo">点击增加count</button>count: {{count}}
+    <div class="line">
+      输入框值为：{{name}}
+      <input type="text" m-model="name">
+    </div>
+    <div class="line">
+      复选框值为：{{checked}}<input type="checkbox" m-model="checked">
+    </div>
+  </div>
+  <script type="module">
+    import MVue from './index.mjs'
+    const myvue = new MVue({
+      el: "#app",
+      data: {
+        count: 0,
+        name: "cxx",
+        fName: { firstName: "chen" },
+        myHtml: "<div style='color:red'>m-html</div>",
+        hobby: "swim",
+        arr: [1, { name: "hhh" }, 3],
+        checked: true
+      },
+      methods: {
+        foo(text) {
+          this.count++
+        }
+      }
+    })
+
+    // setInterval(() => {
+    //   myvue.name = Math.random()
+    // }, 1000)
+
+
+    // setTimeout(() => {
+    //   console.log("-----------多层对象也能响应-----")
+    //   myvue.$data.fName.firstName = "nie"  // 多层对象也能响应
+    // }, 1000)
+
+    // setTimeout(() => {
+    //   console.log("-----------新增属性也能响应-----")
+    //   myvue.$set(myvue.$data, "hate", { fruit: "apple" })
+    //   myvue.$data.hate.fruit = "pear"
+    // }, 2000)
+
+    // setTimeout(() => {
+    //   console.log("-----------代理后能直接通过this.xxx,而非this.$data.xxx 改变数据了-----")
+    //   myvue.hate.fruit = "banana"
+    // }, 3000)
+
+    // setTimeout(() => {
+    //   console.log("-----------数组中的对象也具有响应式-----")
+    //   myvue.$data.arr[1].name = "newvalue"
+    // }, 4000)
+
+    // setTimeout(() => {
+    //   console.log("-----------数组中新增的对象也具有响应式-----")
+    //   myvue.$data.arr.push({ age: 18 })
+    //   myvue.$data.arr[3].age = 20
+    // }, 5000)
+
+  </script>
+
+</body>
+
+</html>
