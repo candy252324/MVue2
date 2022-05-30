@@ -106,7 +106,9 @@ export default function parse(template) {
       processVModel(curEle)
     } else if (propertyArr.find(item => item.match(/^m-bind:(.*)/))) {
       // 处理 m-bind 指令，比如 <span m-bind:test="xx" />
-      processVBind(curEle, RegExp.$1, rawAttr[`m-bind:${RegExp.$1}`])
+      const matchItem = propertyArr.find(item => item.match(/^m-bind:(.*)/))
+      const bindKey = matchItem.match(/^m-bind:(.*)/)[1] // 取到 'm-bind:name' 中的 name
+      processVBind(curEle, bindKey, rawAttr[`m-bind:${bindKey}`])
     } else if (propertyArr.find(item => item.match(/^m-on:(.*)/))) {
       // 处理 m-on 指令，比如 <button m-on:click="add"> add </button>
       processVOn(curEle, RegExp.$1, rawAttr[`m-on:${RegExp.$1}`])

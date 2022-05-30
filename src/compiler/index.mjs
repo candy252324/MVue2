@@ -9,7 +9,8 @@ export default function mount(vm) {
     if (template) {
       _template = template
     } else if (el) {  // 存在挂载点，拿到整个<div id="#app"></div>
-      _template = document.querySelector(el).outerHTML
+      vm.$el = document.querySelector(el)
+      _template = vm.$el.outerHTML
     }
     // 生成渲染函数,并挂在到$options上
     const render = compileToFunction(_template)

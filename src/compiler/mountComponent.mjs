@@ -28,16 +28,15 @@ Vue.prototype._render = function () {
  * @param {*} vnode 由render函数生成的虚拟dom
  */
 Vue.prototype._update = function (vnode) {
-  console.log(vnode)
-  // // 老的 VNode
-  // const prevVNode = this._vnode
-  // // 新的 VNode
-  // this._vnode = vnode
-  // if (!prevVNode) {
-  //   // 老的 VNode 不存在，则说明时首次渲染根组件
-  //   this.$el = this.__patch__(this.$el, vnode)
-  // } else {
-  //   // 后续更新组件或者首次渲染子组件，都会走这里
-  //   this.$el = this.__patch__(prevVNode, vnode)
-  // }
+  // 老的 VNode
+  const prevVNode = this._vnode
+  // 新的 VNode
+  this._vnode = vnode
+  if (!prevVNode) {
+    // 老的 VNode 不存在，则说明是首次渲染根组件
+    this.$el = this.__patch__(this.$el, vnode)
+  } else {
+    // 后续更新组件或者首次渲染子组件，都会走这里
+    this.$el = this.__patch__(prevVNode, vnode)
+  }
 }
