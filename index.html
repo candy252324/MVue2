@@ -15,8 +15,21 @@
 
 <body>
   <div id="app">
-    <h2>插值表达式：姓名{{ name}}，爱好{{hobby}}</h2>
-    <h2>
+    <div class="line">{{name}}<input type="text" m-model="name"></div>
+    <div class="line"> {{selectValue}}
+      <select id="select" m-model="selectValue">
+        <option value="apple">苹果</option>
+        <option value="banana">香蕉</option>
+        <option value="pear">梨</option>
+      </select>
+    </div>
+
+    {{checked}}<input type="checkbox" m-model="checked">
+
+    <div m-bind:name="name">测试bind</div>
+    <button m-on:click="foo">点击</button>{{count}}
+
+    <!-- <h2>
       m-text:<span m-text="name"></span>
     </h2>
     <h2 m-html="myHtml"></h2>
@@ -27,20 +40,21 @@
     </div>
     <div class="line">
       复选框值为：{{checked}}<input type="checkbox" m-model="checked">
-    </div>
+    </div> -->
   </div>
   <script type="module">
     import MVue from './index.mjs'
     const myvue = new MVue({
       el: "#app",
       data: {
-        count: 0,
         name: "cxx",
-        fName: { firstName: "chen" },
-        myHtml: "<div style='color:red'>m-html</div>",
-        hobby: "swim",
-        arr: [1, { name: "hhh" }, 3],
+        count: 0,
+        selectValue: "banana",
         checked: true
+        // fName: { firstName: "chen" },
+        // myHtml: "<div style='color:red'>m-html</div>",
+        // hobby: "swim",
+        // arr: [1, { name: "hhh" }, 3],
       },
       methods: {
         foo(text) {
