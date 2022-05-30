@@ -211,7 +211,7 @@ function parseAttrs(attrs) {
   for (const attr of attrs) {
     // attrs 'id="app"'
     const [attrName, attrValue] = attr.split('=')
-    attrMap[attrName] = attrValue
+    attrMap[attrName] = attrValue.replace(/\"/g, "")
   }
   return attrMap
 }
