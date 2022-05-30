@@ -26,8 +26,9 @@
 
     {{checked}}<input type="checkbox" m-model="checked">
 
-    <div m-bind:name="name">测试bind</div>
+    <div m-bind:name="name" class="line">测试bind</div>
     <button m-on:click="foo">点击</button>{{count}}
+    <comp></comp>
 
     <!-- <h2>
       m-text:<span m-text="name"></span>
@@ -64,14 +65,28 @@
       components: {
         "comp": {
           template: `
-            <div>
-              <p>{{compCount}}</p>
+            <div class="line">
+              <button m-on:click="handleAdd">子组件</button>
             </div>
-            <button m-on:click="handleAdd"></button>
           `,
           data() {
             return {
-              compCount: 0
+              text: "子组件"
+            }
+          },
+          methods: {
+            handleAdd() { console.log("子组件点击") }
+          }
+        },
+        "scope-slot": {
+          template: `
+            <div>
+              <slot name="default" m:bind:slotKey="slotKey">{{slotKey}}</slot>
+            </div>
+          `,
+          data() {
+            return {
+              slotKey: "slot content"
             }
           }
         }

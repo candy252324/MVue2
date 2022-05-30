@@ -6,6 +6,7 @@ export default function mount(vm) {
   if (!vm.$options.render) {
     let _template = ""
     const { el, template } = vm.$options
+    // 子组件挂载走这个分支
     if (template) {
       _template = template
     } else if (el) {  // 存在挂载点，拿到整个<div id="#app"></div>

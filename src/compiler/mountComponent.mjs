@@ -33,10 +33,10 @@ Vue.prototype._update = function (vnode) {
   // 新的 VNode
   this._vnode = vnode
   if (!prevVNode) {
-    // 老的 VNode 不存在，则说明是首次渲染根组件
+    // 老的 VNode 不存在，则说明是首次渲染根/子组件(如果不存在this.$el , 则是子组件首次挂载，否则是根组件首次渲染)
     this.$el = this.__patch__(this.$el, vnode)
   } else {
-    // 后续更新组件或者首次渲染子组件，都会走这里
+    // 后续更新组件，都会走这里
     this.$el = this.__patch__(prevVNode, vnode)
   }
 }

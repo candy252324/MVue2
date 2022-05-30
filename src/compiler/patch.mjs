@@ -1,3 +1,6 @@
+import { isReserveTag } from "../utils/index.mjs"
+import Vue from '../../index.mjs'
+
 export default function patch(oldVnode, vnode) {
   // 组件销毁，这个分支本项目不处理
   if (oldVnode && !vnode) {
@@ -6,7 +9,7 @@ export default function patch(oldVnode, vnode) {
   }
   // 子组件首次渲染
   if (!oldVnode) {
-
+    createElm(vnode)
   } else {
     // 存在nodeType, 说明是真实节点，则是根节点首次渲染
     if (oldVnode.nodeType) {
@@ -25,7 +28,9 @@ export default function patch(oldVnode, vnode) {
 
 
 /**
- * 创建元素
+ * 创建元素，
+ * 并在vnode上绑定parent,指向真实parent dom
+ * 并在非定义组件元素的vnode上绑定elm,指向真实创建的dom元素;
  * @param {*} vnode VNode
  * @param {*} parent VNode 的父节点，真实节点
  * @param {*} referNode 参考节点
@@ -33,7 +38,7 @@ export default function patch(oldVnode, vnode) {
 function createElm(vnode, parent, referNode) {
   // 记录节点的父节点
   vnode.parent = parent
-  // 如果是自定义组件<my-comp><my-comp/>, 
+  // 如果是自定义组件,如: <my-comp><my-comp/>, 
   if (createComponent(vnode)) return
   // 否则走接下来的原生标签逻辑
   const { attr, children, text } = vnode
@@ -62,9 +67,26 @@ function createElm(vnode, parent, referNode) {
 }
 
 
+/**
+ * 创建自定义组件
+ * @param {*} vnode
+ */
 function createComponent(vnode) {
-
+  if (vnode.tag && !isReserveTag(vnode.tag)) { // 非保留节点，则说明是组件
+    // 获取组件配置信息
+    const { tag, context: { $options: { components } } } = vnode
+    const compOptions = components[tag]
+    // vue 源码中这里是用 vue.extend 实现的，本项目为了实现方便，直接 new Vue 一个子组件 
+    const compIns = new Vue(compOptions)
+    // 这里需要手动调用$mount 挂载子组件, 因为 new Vue 子组件的时候，不存在$el挂载点了，if判断进不去
+    compIns.$mount() //
+    // 将子组件添加到父节点内
+    vnode.parent.appendChild(compIns._vnode.elm)
+    return true
+  }
 }
+
+
 
 /**
  * 创建文本节点

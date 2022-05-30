@@ -6,3 +6,11 @@ export function isUnaryTag(tagName) {
   return unaryTag.includes(tagName)
 }
 
+/**
+ * 是否为平台保留节点
+ */
+export function isReserveTag(tagName) {
+  const reserveTag = ['div', 'h1', 'h2', 'h3', , 'span', 'input', 'select', 'option', 'p', 'button', 'template']
+  return reserveTag.includes(tagName)
+}
+
