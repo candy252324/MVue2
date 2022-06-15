@@ -14,7 +14,7 @@ export default function patch(oldVnode, vnode) {
     // 存在nodeType, 说明是真实节点，则是根节点首次渲染
     if (oldVnode.nodeType) {
       const parent = oldVnode.parentNode // 父节点 body
-      const referNode = oldVnode.nextSibling  // 参考节点，第一个script 标签
+      const referNode = oldVnode.nextSibling  // 参考节点，比如第一个script 标签
       // 将vnode变成真实元素挂载到父节点内
       createElm(vnode, parent, referNode)
       // 移除老的vNode(模板节点)  
@@ -78,7 +78,7 @@ function createComponent(vnode) {
     const compOptions = components[tag]
     // vue 源码中这里是用 vue.extend 实现的，本项目为了实现方便，直接 new Vue 一个子组件 
     const compIns = new Vue(compOptions)
-    // 将父组件的 VNode 放到子组件的实例上
+    // 将父组件的 VNode 放到子组件的实例上(生成slot的vnode的时候用到)
     compIns._parentVnode = vnode
     // 这里需要手动调用$mount 挂载子组件, 因为 new Vue 子组件的时候，不存在$el挂载点了，if判断进不去
     compIns.$mount() //

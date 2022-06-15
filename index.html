@@ -30,13 +30,6 @@
     <button v-on:click="foo">点击</button>{{count}}
     <comp></comp>
 
-    <!-- <scope-slot></scope-slot>
-    <scope-slot>
-      <template v-slot:default="scopeSlot">
-        <div>{{scopeSlot}}</div>
-      </template>
-    </scope-slot> -->
-
     <h2>
       v-text:<span v-text="name"></span>
     </h2>
@@ -49,6 +42,15 @@
     <div class="line">
       复选框值为：{{checked}}<input type="checkbox" v-model="checked">
     </div>
+
+    <h2>------------插槽------------</h2>
+    <slot-comp></slot-comp>
+    <slot-comp>
+      <template v-slot:default="slotProps">
+        <span>{{slotProps}}</span>
+      </template>
+    </slot-comp>
+
   </div>
   <script type="module">
     import MVue from './index.mjs'
@@ -86,15 +88,15 @@
             handleAdd() { console.log("子组件点击") }
           }
         },
-        "scope-slot": {
+        "slot-comp": {
           template: `
             <div>
-              <slot name="default" m:bind:slotKey="slotKey">{{slotKey}}</slot>
+              <slot name="default" v-bind:slotValue="slotValue">{{slotValue}}</slot>
             </div>
           `,
           data() {
             return {
-              slotKey: "slot content"
+              slotValue: "slot组件内部值"
             }
           }
         }

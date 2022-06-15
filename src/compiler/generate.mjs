@@ -20,9 +20,14 @@ function genElement(ast) {
 
   // 生成属性 Map 对象，静态属性 + 动态属性
   const attrs = { ...rawAttr, ...attr }
-
   // 处理子节点，得到一个所有子节点渲染函数组成的数组
   const children = genChildren(ast)
+  // 插槽处理
+  if (tag === "slot") {
+    // 注：这里vue中没有使用 JSON.stringify，而是使用字符串拼接的方式做的，
+    // 这里使用JSON.stringify导致在处理slot的时候出现了一个循环引用爆栈的问题，需要特殊处理（处理内容搜索"备注1"）
+    return `_t(${JSON.stringify(attrs)}, [${children}])`
+  }
 
   // 生成 VNode 的可执行方法, 元素节点，用_c处理
   return `_c('${tag}', ${JSON.stringify(attrs)}, [${children}])`
