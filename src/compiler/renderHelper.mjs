@@ -1,6 +1,6 @@
 import VNode from './vnode.mjs'
 
-/** 用于在vue实例上挂在 _c 和 _v 方法 */
+/** 用于在vue实例上挂载 _c 和 _v 方法 */
 export default function renderHelper(vm) {
   vm._c = createElement
   vm._v = createText

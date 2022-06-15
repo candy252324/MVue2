@@ -15,5 +15,5 @@ $ npm run dev
 
 数据响应式更新
 - 依赖收集（Dep, Wather）
-- 编译器（插值表达式，m-text，m-html，m-on:click, m:model）
+- 编译器（插值表达式，v-text，v-html，v-on:click, v-model）
 

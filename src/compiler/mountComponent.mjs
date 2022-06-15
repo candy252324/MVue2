@@ -10,8 +10,9 @@ export default function mountComponent(vm) {
   const updateComponent = () => {
     vm._update(vm._render())
   }
-
+  console.log("new Watcher!!!!!!")
   // 实例化一个渲染 Watcher，当响应式数据更新时，这个更新函数会被执行
+  // cjh todo 这里有个问题，updateComponent 里面如果发生多次this.xxx的触发getter,会导致依赖被多次收集
   new Watcher(updateComponent)
 }
 

@@ -7,7 +7,7 @@
  * @param {*} text 文本节点的 ast 对象
  * @returns VNode
  */
-export default function vnode(tag, attr, children, context = null, text = null) {
+export default function VNode(tag, attr, children, context = null, text = null) {
   return {
     tag,
     attr,

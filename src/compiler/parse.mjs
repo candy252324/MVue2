@@ -101,17 +101,17 @@ export default function parse(template) {
     // 属性对象的 key 组成的数组
     const propertyArr = Object.keys(rawAttr)
 
-    if (propertyArr.includes('m-model')) {
-      // 处理 m-model 指令
+    if (propertyArr.includes('v-model')) {
+      // 处理 v-model 指令
       processVModel(curEle)
-    } else if (propertyArr.find(item => item.match(/^m-bind:(.*)/))) {
-      // 处理 m-bind 指令，比如 <span m-bind:test="xx" />
-      const matchItem = propertyArr.find(item => item.match(/^m-bind:(.*)/))
-      const bindKey = matchItem.match(/^m-bind:(.*)/)[1] // 取到 'm-bind:name' 中的 name
-      processVBind(curEle, bindKey, rawAttr[`m-bind:${bindKey}`])
-    } else if (propertyArr.find(item => item.match(/^m-on:(.*)/))) {
-      // 处理 m-on 指令，比如 <button m-on:click="add"> add </button>
-      processVOn(curEle, RegExp.$1, rawAttr[`m-on:${RegExp.$1}`])
+    } else if (propertyArr.find(item => item.match(/^v-bind:(.*)/))) {
+      // 处理 v-bind 指令，比如 <span v-bind:test="xx" />
+      const matchItem = propertyArr.find(item => item.match(/^v-bind:(.*)/))
+      const bindKey = matchItem.match(/^v-bind:(.*)/)[1] // 取到 'v-bind:name' 中的 name
+      processVBind(curEle, bindKey, rawAttr[`v-bind:${bindKey}`])
+    } else if (propertyArr.find(item => item.match(/^v-on:(.*)/))) {
+      // 处理 v-on 指令，比如 <button v-on:click="add"> add </button>
+      processVOn(curEle, RegExp.$1, rawAttr[`v-on:${RegExp.$1}`])
     }
 
     // 节点处理完以后让其和父节点产生关系
@@ -156,50 +156,50 @@ export default function parse(template) {
 
 
 /**
- * 处理 m-model 指令，将处理结果直接放到 curEle 对象身上
+ * 处理 v-model 指令，将处理结果直接放到 curEle 对象身上
  * @param {*} curEle 
  */
 function processVModel(curEle) {
   const { tag, rawAttr, attr } = curEle
-  const { type, 'm-model': mModelVal } = rawAttr
+  const { type, 'v-model': vModelVal } = rawAttr
 
   if (tag === 'input') {
     if (/text/.test(type)) {
-      // <input type="text" m-model="inputVal" />
-      attr.mModel = { tag, type: 'text', value: mModelVal }
+      // <input type="text" v-model="inputVal" />
+      attr.vModel = { tag, type: 'text', value: vModelVal }
     } else if (/checkbox/.test(type)) {
-      // <input type="checkbox" m-model="isChecked" />
-      attr.mModel = { tag, type: 'checkbox', value: mModelVal }
+      // <input type="checkbox" v-model="isChecked" />
+      attr.vModel = { tag, type: 'checkbox', value: vModelVal }
     }
   } else if (tag === 'textarea') {
-    // <textarea m-model="test" />
-    attr.mModel = { tag, value: mModelVal }
+    // <textarea v-model="test" />
+    attr.vModel = { tag, value: vModelVal }
   } else if (tag === 'select') {
-    // <select m-model="selectedValue">...</select>
-    attr.mModel = { tag, value: mModelVal }
+    // <select v-model="selectedValue">...</select>
+    attr.vModel = { tag, value: vModelVal }
   }
 }
 
 
 /**
- * 处理 m-on 指令
+ * 处理 v-on 指令
  * @param {*} curEle 当前被处理的 AST 对象
- * @param {*} mOnKey m-on:key 中的 key
- * @param {*} mOnVal m-on:key="val" 中的 val
+ * @param {*} vOnKey v-on:key 中的 key
+ * @param {*} vOnVal v-on:key="val" 中的 val
  */
-function processVOn(curEle, mOnKey, mOnVal) {
-  curEle.attr.mOn = { [mOnKey]: mOnVal }
+function processVOn(curEle, vOnKey, vOnVal) {
+  curEle.attr.mOn = { [vOnKey]: vOnVal }
 }
 
 
 /**
- * 处理 m-bind 指令
+ * 处理 v-bind 指令
  * @param {*} curEle 当前正在处理的 AST 对象
- * @param {*} bindKey m-bind:key 中的 key
- * @param {*} bindVal m-bind:key = val 中的 val
+ * @param {*} bindKey v-bind:key 中的 key
+ * @param {*} bindVal v-bind:key = val 中的 val
  */
 function processVBind(curEle, bindKey, bindVal) {
-  curEle.attr.mBind = { [bindKey]: bindVal }
+  curEle.attr.vBind = { [bindKey]: bindVal }
 }
 
 

@@ -78,8 +78,12 @@ function createComponent(vnode) {
     const compOptions = components[tag]
     // vue 源码中这里是用 vue.extend 实现的，本项目为了实现方便，直接 new Vue 一个子组件 
     const compIns = new Vue(compOptions)
+    // 将父组件的 VNode 放到子组件的实例上
+    compIns._parentVnode = vnode
     // 这里需要手动调用$mount 挂载子组件, 因为 new Vue 子组件的时候，不存在$el挂载点了，if判断进不去
     compIns.$mount() //
+    // 记录子组件 vnode 的父节点信息
+    compIns._vnode.parent = vnode.parent
     // 将子组件添加到父节点内
     vnode.parent.appendChild(compIns._vnode.elm)
     return true
@@ -89,7 +93,7 @@ function createComponent(vnode) {
 
 
 /**
- * 创建文本节点
+ * 创建文本节点（真实dom）
  * @param {*} textVNode 文本节点的 VNode
  */
 function createTextNode(textVNode) {
@@ -115,16 +119,16 @@ function createTextNode(textVNode) {
 function setAttribute(attr, vnode) {
   // 遍历属性，如果是普通属性，直接设置，如果是指令，则特殊处理
   for (let name in attr) {
-    if (name === 'mModel') {
-      // m-model 指令
-      const { tag, value } = attr.mModel
-      setMModel(tag, value, vnode)
-    } else if (name === 'mBind') {
-      // m-bind 指令
-      setMBind(vnode)
+    if (name === 'vModel') {
+      // v-model 指令
+      const { tag, value } = attr.vModel
+      setVModel(tag, value, vnode)
+    } else if (name === 'vBind') {
+      // v-bind 指令
+      setVBind(vnode)
     } else if (name === 'mOn') {
-      // m-on 指令
-      setMOn(vnode)
+      // v-on 指令
+      setVOn(vnode)
     } else {
       // 普通属性
       vnode.elm.setAttribute(name, attr[name])
@@ -138,7 +142,7 @@ function setAttribute(attr, vnode) {
  * @param {*} value 属性值
  * @param {*} node 节点
  */
-function setMModel(tag, value, vnode) {
+function setVModel(tag, value, vnode) {
   const { context: vm, elm } = vnode
   if (tag === 'select') {
     // 下拉框，<select></select>
@@ -171,11 +175,11 @@ function setMModel(tag, value, vnode) {
  * <span title="xxx"></span>
  * @param {*} vnode
  */
-function setMBind(vnode) {
-  const { attr: { mBind }, elm, context: vm } = vnode
-  for (let attrName in mBind) {
-    elm.setAttribute(attrName, vm[mBind[attrName]])
-    elm.removeAttribute(`m-bind:${attrName}`)
+function setVBind(vnode) {
+  const { attr: { vBind }, elm, context: vm } = vnode
+  for (let attrName in vBind) {
+    elm.setAttribute(attrName, vm[vBind[attrName]])
+    elm.removeAttribute(`v-bind:${attrName}`)
   }
 }
 
@@ -183,7 +187,7 @@ function setMBind(vnode) {
  * v-on 原理
  * @param {*} vnode 
  */
-function setMOn(vnode) {
+function setVOn(vnode) {
   const { attr: { mOn }, elm, context: vm } = vnode
   for (let eventName in mOn) {
     elm.addEventListener(eventName, function (...args) {

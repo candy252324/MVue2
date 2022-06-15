@@ -15,33 +15,40 @@
 
 <body>
   <div id="app">
-    <div class="line">{{name}}<input type="text" m-model="name"></div>
+    <div class="line">{{name}}<input type="text" v-model="name"></div>
     <div class="line"> {{selectValue}}
-      <select id="select" m-model="selectValue">
+      <select id="select" v-model="selectValue">
         <option value="apple">苹果</option>
         <option value="banana">香蕉</option>
         <option value="pear">梨</option>
       </select>
     </div>
 
-    {{checked}}<input type="checkbox" m-model="checked">
+    {{checked}}<input type="checkbox" v-model="checked">
 
-    <div m-bind:name="name" class="line">测试bind</div>
-    <button m-on:click="foo">点击</button>{{count}}
+    <div v-bind:name="name" class="line">测试bind</div>
+    <button v-on:click="foo">点击</button>{{count}}
     <comp></comp>
 
-    <!-- <h2>
-      m-text:<span m-text="name"></span>
+    <!-- <scope-slot></scope-slot>
+    <scope-slot>
+      <template v-slot:default="scopeSlot">
+        <div>{{scopeSlot}}</div>
+      </template>
+    </scope-slot> -->
+
+    <h2>
+      v-text:<span v-text="name"></span>
     </h2>
-    <h2 m-html="myHtml"></h2>
-    <button m-on:click="foo">点击增加count</button>count: {{count}}
+    <h2 v-html="myHtml"></h2>
+    <button v-on:click="foo">点击增加count</button>count: {{count}}
     <div class="line">
       输入框值为：{{name}}
-      <input type="text" m-model="name">
+      <input type="text" v-model="name">
     </div>
     <div class="line">
-      复选框值为：{{checked}}<input type="checkbox" m-model="checked">
-    </div> -->
+      复选框值为：{{checked}}<input type="checkbox" v-model="checked">
+    </div>
   </div>
   <script type="module">
     import MVue from './index.mjs'
@@ -53,10 +60,11 @@
         selectValue: "banana",
         checked: true
         // fName: { firstName: "chen" },
-        // myHtml: "<div style='color:red'>m-html</div>",
+        // myHtml: "<div style='color:red'>v-html</div>",
         // hobby: "swim",
         // arr: [1, { name: "hhh" }, 3],
       },
+      // template: `<div>hello  template</div>`, // cjh todo template 没挂载？
       methods: {
         foo(text) {
           this.count++
@@ -66,7 +74,7 @@
         "comp": {
           template: `
             <div class="line">
-              <button m-on:click="handleAdd">子组件</button>
+              <button v-on:click="handleAdd">子组件</button>
             </div>
           `,
           data() {
