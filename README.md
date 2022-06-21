@@ -17,3 +17,6 @@ $ npm run dev
 - 依赖收集（Dep, Wather）
 - 编译器（插值表达式，v-text，v-html，v-on:click, v-model）
 
+插槽
+
+

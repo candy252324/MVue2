@@ -26,7 +26,7 @@ function createTextNode(textAst) {
 }
 
 /**
- * 生成插槽的的 VNode
+ * 生成插槽的 VNode
  * @param {*} attrs 插槽的属性
  * @param {*} children 插槽所有子节点的 ast 组成的数组
  */
@@ -46,12 +46,10 @@ function renderSlot(attrs, children) {
     const slotInfo = parentAttr.scopedSlots[slotName]
     // 这里的逻辑稍微有点绕，建议打开调试，查看一下数据结构，理清对应的思路
     // 这里比较绕的逻辑完全是为了实现插槽这个功能，和插槽本身的原理没关系
-    debugger
     this[slotInfo.scopeSlot] = this[Object.keys(attrs.vBind)[0]]
     vnode = genVNode(slotInfo.children, this)
   } else { // 插槽默认内容 ,没传内容 <slot-comp></slot-comp>
     // 将 children 变成 vnode 数组
-    debugger
     vnode = genVNode(children, this)
   }
 
@@ -68,7 +66,6 @@ function renderSlot(attrs, children) {
  */
 function genVNode(childs, vm) {
   const vnode = []
-  debugger
   for (let i = 0, len = childs.length; i < len; i++) {
     const { tag, attr, children, text } = childs[i]
     if (text) { // 文本节点
