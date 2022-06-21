@@ -9,7 +9,6 @@ export default class Watcher {
     Dep.target = null // 防止重复依赖收集
   }
   update() {
-    console.log("update!!!")
     this._cb()  // 当响应式数据更新时，执行_cb函数，更新dom
   }
 }

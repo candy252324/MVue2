@@ -15,33 +15,36 @@
 
 <body>
   <div id="app">
-    <div class="line">{{name}}<input type="text" v-model="name"></div>
-    <div class="line"> {{selectValue}}
+    <h2>------------v-model------------</h2>
+    <!-- input -->
+    <div class="line">
+      {{name}}
+      <input type="text" v-model="name">
+    </div>
+    <!-- select -->
+    <div class="line">
+      {{selectValue}}
       <select id="select" v-model="selectValue">
         <option value="apple">苹果</option>
         <option value="banana">香蕉</option>
         <option value="pear">梨</option>
       </select>
     </div>
+    <!-- checkbox -->
+    <div class="line">
+      {{checked}}
+      <input type="checkbox" v-model="checked">
+    </div>
 
-    {{checked}}<input type="checkbox" v-model="checked">
+    <h2>------------v-bind------------</h2>
 
     <div v-bind:name="name" class="line">测试bind</div>
-    <button v-on:click="foo">点击</button>{{count}}
-    <comp></comp>
 
-    <h2>
-      v-text:<span v-text="name"></span>
-    </h2>
-    <h2 v-html="myHtml"></h2>
-    <button v-on:click="foo">点击增加count</button>count: {{count}}
-    <div class="line">
-      输入框值为：{{name}}
-      <input type="text" v-model="name">
-    </div>
-    <div class="line">
-      复选框值为：{{checked}}<input type="checkbox" v-model="checked">
-    </div>
+    <h2>------------v-on:click------------</h2>
+    <button v-on:click="foo">点击</button>{{count}}
+
+    <h2>------------组件------------</h2>
+    <comp></comp>
 
     <h2>------------插槽------------</h2>
     <slot-comp></slot-comp>
@@ -60,13 +63,8 @@
         name: "cxx",
         count: 0,
         selectValue: "banana",
-        checked: true
-        // fName: { firstName: "chen" },
-        // myHtml: "<div style='color:red'>v-html</div>",
-        // hobby: "swim",
-        // arr: [1, { name: "hhh" }, 3],
+        checked: true,
       },
-      // template: `<div>hello  template</div>`, // cjh todo template 没挂载？
       methods: {
         foo(text) {
           this.count++
@@ -76,16 +74,19 @@
         "comp": {
           template: `
             <div class="line">
-              <button v-on:click="handleAdd">子组件</button>
+              <div>{{count}}</div>
+              <button v-on:click="compAdd">组件+</button>
+              <button v-on:click="compSub">组件-</button>
             </div>
           `,
           data() {
             return {
-              text: "子组件"
+              count: 0,
             }
           },
           methods: {
-            handleAdd() { console.log("子组件点击") }
+            compAdd() { this.count++ },
+            compSub() { this.count-- },
           }
         },
         "slot-comp": {
@@ -102,8 +103,7 @@
         }
       }
     })
-
-    // setInterval(() => {
+     // setInterval(() => {
     //   myvue.name = Math.random()
     // }, 1000)
 
@@ -134,7 +134,6 @@
     //   myvue.$data.arr.push({ age: 18 })
     //   myvue.$data.arr[3].age = 20
     // }, 5000)
-
   </script>
 
 </body>
