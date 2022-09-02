@@ -2,6 +2,7 @@ import observe from './src/observe.mjs'
 import defineReactive from './src/defineReactive.mjs'
 import proxyData from './src/proxyData.mjs'
 import initData from './src/initData.mjs'
+import initComputed from './src/initComputed.mjs'
 import mount from './src/compiler/index.mjs'
 import renderHelper from './src/compiler/renderHelper.mjs'
 import patch from './src/compiler/patch.mjs'
@@ -18,6 +19,7 @@ export default function MVue(options) {
 }
 MVue.prototype._init = function (options) {
   initData(this)
+  initComputed(this)
   renderHelper(this)
   this.__patch__ = patch  // 在vue上挂一个__patch__方法
   if (this.$options.el) {

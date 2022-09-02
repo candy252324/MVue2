@@ -244,7 +244,6 @@ function patchVnode(oldVnode, vnode) {
  * @param {*} oldCh 老 vnode 的所有孩子节点
  */
 function updateChildren(ch, oldCh) {
-  console.log(ch, oldCh)
   // 四个游标
   // 新孩子节点的开始索引，叫 新开始
   let newStartIdx = 0
