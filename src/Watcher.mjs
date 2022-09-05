@@ -20,7 +20,7 @@ export default class Watcher {
     this.value = this._cb.apply(this.vm)
     Dep.target = null // 防止重复依赖收集
   }
-  // 当响应式数据更新时，update
+  // 当响应式数据更新时，执行 update
   update() {
     // 懒执行
     if (this.options.lazy) {

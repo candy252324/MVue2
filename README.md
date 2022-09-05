@@ -17,7 +17,9 @@ $ npm run dev
 - 依赖收集（Dep, Watcher）
 - 编译器（插值表达式，v-text，v-html，v-on:click, v-model）
 
-插槽
+diff 算法 
+
+插槽原理
 
 计算属性
 
