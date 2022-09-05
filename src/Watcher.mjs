@@ -1,7 +1,10 @@
 import Dep from './Dep.mjs'
+import queueWatcher from './asyncUpdateQueue.mjs'
+let uid = 0
 
 export default class Watcher {
   constructor(cb, options = {}, vm = null) {
+    this.uid = uid++
     this._cb = cb
     this.options = options
     !options.lazy && this.get()
@@ -17,17 +20,23 @@ export default class Watcher {
     this.value = this._cb.apply(this.vm)
     Dep.target = null // 防止重复依赖收集
   }
+  // 当响应式数据更新时，update
   update() {
-    // 当响应式数据更新时，执行_cb函数，更新dom
-    Promise.resolve().then(() => {
-      this._cb()
-    })
-    this.dirty = true
+    // 懒执行
+    if (this.options.lazy) {
+      this.dirty = true
+    } else {
+      queueWatcher(this)
+    }
   }
   evalute() {
     // 触发 cb 执行
     this.get()
     // dirty 置为false, 实现一次刷新周期内 computed 计算属性只执行一次
     this.dirty = false
+  }
+  //  由刷新 watcher 队列的函数调用，负责执行 watcher.get 方法
+  run() {
+    this.get()
   }
 }

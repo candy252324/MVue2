@@ -14,9 +14,11 @@ $ npm run dev
 - 数组
 
 数据响应式更新
-- 依赖收集（Dep, Wather）
+- 依赖收集（Dep, Watcher）
 - 编译器（插值表达式，v-text，v-html，v-on:click, v-model）
 
 插槽
 
+计算属性
 
+异步更新队列
